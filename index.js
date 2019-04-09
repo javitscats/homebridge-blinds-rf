@@ -123,17 +123,16 @@ BlindsRFAccessory.prototype.setTargetPosition = function(pos, callback) {
 }
  
 BlindsRFAccessory.prototype.rfTransmit = function(rawcode, callback) {
-	pilight = "pilight-send -p raw -c ";
-	cmd = pilight.concat("\"", rawcode, "\"");
-  exec(cmd, (error, stdout, stderr) => {
-    if (error) {
-      return;
-    } 
-    if (tout) {
-      clearTimeout(tout);
-      callback(error);
-    }
-  });
+	var pilight = "pilight-send -p raw -c ";
+	var cmd = pilight.concat("\"", rawcode, "\"");
+	var exec = require('child_process').exec, child;
+
+	child = exec(cmd,
+	    function (error, stdout, stderr) {
+		if (error !== null) {
+		     console.log('exec error: ' + error);
+		}
+	});
 },
  
 BlindsRFAccessory.prototype.getServices = function() {
